@@ -1,5 +1,5 @@
 # Space-invaders
-A space invaders using the MLV C library
+A space invaders using the MLV C library : http://www-igm.univ-mlv.fr/~boussica/mlv/
 
 ## Etudiants
 Erwin Mehl, Theo Dumas, Antoine Willerval
