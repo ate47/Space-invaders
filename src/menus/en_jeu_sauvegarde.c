@@ -32,7 +32,7 @@ Menu* save_menu_save(Donnees_Menu* d) {
     ALLOC_MEMORY(texte, sizeof(char) * 45, "save-texte");
     if (c.termine) {
       sprintf(texte, MENU_SAVE_EMPTY, i + 1);
-      definir_bouton(menu, i, - 200, - 64 + 24 * i, 400, 20, (const char*) texte, Position_Relative_Centre, Position_Relative_Milieu, i + 1);
+      definir_bouton(menu, i, - 200, - 64 + 24 * i, 400, 20, (const char*) texte, Position_Relative_Centre, Position_Relative_Milieu);
     } else {
       sprintf(texte, MENU_SAVE_NOT_EMPTY, i + 1, c.score, c.score > 1 ? "s" : "");
       definir_bouton(menu, i, - 200, - 64 + 24 * i, 400, 20,(const char*) texte, Position_Relative_Centre, Position_Relative_Milieu);

@@ -205,9 +205,11 @@ Donnees_Menu* creer_donnee(Jeu* jeu) {
 
 void init_menu(Menu* menu, Donnees_Menu* donnee) {
     int i, /* iterateur */
+#if MENU_TEXTE
+    input; /* input pour le menu textuel */
+#else
     sx, sy, /* position absolue de la souris (x,y) */
     srx, sry, /* position relative de la souris (x,y) */
-    input, /* input pour le menu textuel */
     bouton_clique;  /* si un bouton a cliqué pendant le tick */
     double tsn, angle; Rocket_Data* tmp; /* Outils de calcul pour les missiles */
     
@@ -216,26 +218,27 @@ void init_menu(Menu* menu, Donnees_Menu* donnee) {
     MLV_Image* missile; /* Image de missile */
     Animation_gestion *alfred_anim;/* L'animation d'Alfred */
     Rocket_Data rd[NB_ROCKETS]; /* Les missiles */
+
+    /* Charge les images */
+    alfred =  MLV_load_image( GAME_FILE_ALFRED );
+    missile = MLV_load_image( GAME_FILE_ROCKET );
+    /* Change sa taille d'Alfred */
+    MLV_resize_image( alfred, 128, 512 );
     
-    if ( !MENU_TEXTE ) {
-      /* Charge les images */
-      alfred =  MLV_load_image( GAME_FILE_ALFRED );
-      missile = MLV_load_image( GAME_FILE_ROCKET );
-      /* Change sa taille d'Alfred */
-      MLV_resize_image( alfred, 128, 512 );
-      
-      /* Initialise les missiles  */
-      for (i = 0; i < NB_ROCKETS; i++) {
-        rd[i].anim = creer_joueur_animation(missile, 4, 5, 0, 0, ROCKET_SIZE, ROCKET_SIZE);
-        rd[i].rx = rnd(0, WINDOW_WIDTH);
-        rd[i].ry = rnd(0, WINDOW_HEIGHT);
-        rd[i].a = 0;
-        rd[i].lock_x = rnd(-12, WINDOW_WIDTH + 12);
-        rd[i].lock_y = rnd(-12, WINDOW_HEIGHT + 12);
-      }
-      /* Créer un joueur d'animation*/
-      alfred_anim = creer_joueur_animation(alfred, 4, 10, 0, 0, 128, 128);
+    /* Initialise les missiles  */
+    for (i = 0; i < NB_ROCKETS; i++) {
+      rd[i].anim = creer_joueur_animation(missile, 4, 5, 0, 0, ROCKET_SIZE, ROCKET_SIZE);
+      rd[i].rx = rnd(0, WINDOW_WIDTH);
+      rd[i].ry = rnd(0, WINDOW_HEIGHT);
+      rd[i].a = 0;
+      rd[i].lock_x = rnd(-12, WINDOW_WIDTH + 12);
+      rd[i].lock_y = rnd(-12, WINDOW_HEIGHT + 12);
     }
+    /* Créer un joueur d'animation*/
+    alfred_anim = creer_joueur_animation(alfred, 4, 10, 0, 0, 128, 128);
+    
+#endif
+    
     lancer_menu(menu, donnee); /* Lancer le menu de base */
     while ( donnee->menu_suivant != NULL ) {
         menu = donnee->menu_suivant;
@@ -245,23 +248,24 @@ void init_menu(Menu* menu, Donnees_Menu* donnee) {
             reset_button(&menu->boutons[i]);
         }
         do {
-            if ( MENU_TEXTE ) {
-                /* Dessine le menu */
-                if ( menu->dessiner_texte )
-                    menu->dessiner_texte(donnee);
-                
-                /* Affiche les boutons disponibles */
-                for (i = 0; i < menu->boutons_nombre; i++)
-                    printf("%d - %s\n", i+1, menu->boutons[i].texte);
-                
-                /* Demande à l'utilisateur un des boutons */
-                printf(MENU_TEXT_PROMPT);
-                if ( fscanf(stdin, "%d", &input) == 1 && input > 0 && input <= menu->boutons_nombre && menu->clique_sur_bouton)
-                    /* Lance le gestionnaire de bouton si il est defini pour le bouton selectionné */
-                        menu->clique_sur_bouton(&menu->boutons[input-1], donnee);
-                fflush(stdin);
-                continue;
-            }
+#if MENU_TEXTE
+            /* Dessine le menu */
+            if ( menu->dessiner_texte )
+                menu->dessiner_texte(donnee);
+            
+            /* Affiche les boutons disponibles */
+            for (i = 0; i < menu->boutons_nombre; i++)
+                printf("%d - %s\n", i+1, menu->boutons[i].texte);
+            
+            /* Demande à l'utilisateur un des boutons */
+            printf(MENU_TEXT_PROMPT);
+            if ( fscanf(stdin, "%d", &input) == 1 && input > 0 && input <= menu->boutons_nombre && menu->clique_sur_bouton)
+                /* Lance le gestionnaire de bouton si il est defini pour le bouton selectionné */
+                    menu->clique_sur_bouton(&menu->boutons[input-1], donnee);
+            fflush(stdin);
+            
+#else
+              
             /* Pour l'instant aucun bouton n'a appuyé */
             bouton_clique = 0;
             
@@ -341,6 +345,7 @@ void init_menu(Menu* menu, Donnees_Menu* donnee) {
             
             /* Attend le temps entre les images */
             MLV_delay_according_to_frame_rate();
+#endif
         } while ( donnee->menu_suivant == menu ); /* Continuer tant qu'on n'a pas changé de menu */
         
         /* Attendre que l'utilisateur a terminé de cliquer sur sa souris */

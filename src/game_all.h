@@ -1,6 +1,7 @@
 
 #ifndef __GAME_ALL_H__
 #define __GAME_ALL_H__
+#include "MLV/MLV_all.h"
 
 /* C'est toujours pratique d'avoir ça à un endroit */
 #define GAME_NAME "Space Invaders"
@@ -14,7 +15,7 @@
 #define FRAME_RATE 60
 
 /* !=0 si on veut afficher la journalisation */
-#define DEV_MODE 1
+#define DEV_MODE 0
 
 /* Fichiers du jeu */
 #define GAME_SAVE_FILE "data/save.sho"
@@ -213,7 +214,6 @@ if (POINTER == NULL){ \
 #include<stdio.h>
 #include<string.h>
 #include <math.h>
-#include "MLV/MLV_all.h"
 
 /* Les modules */
 

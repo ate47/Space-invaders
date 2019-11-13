@@ -8,10 +8,10 @@
 
 void fin_jeu(void* data) {
     LOG(LOG_QUIT_GAME);
-    
     /* Libére la fenetre si elle existe */
-    if ( !MENU_TEXTE )
-        MLV_free_window();
+#if !MENU_TEXTE
+    MLV_free_window();
+#endif
     sauvegarder_jeu((Jeu*) data);
     exit(EXIT_SUCCESS);
 }

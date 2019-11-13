@@ -14,16 +14,7 @@ static void data_injector_draw(int x, int y, Donnees_Menu* donnee) {
 static void data_injector_button_clique(Menu_Bouton* bouton, Donnees_Menu* donnee) {
   /* Regarde et agit suivant l'id du bouton */
   switch (avoir_bouton_id(bouton)) {
-    case 0: /* Configuration */
-      
-      break;
-    case 1: /* Sauvegardes */
-      
-      break;
-    case 2: /* Scores */
-      
-      break;
-    case 3: /* Recharger */
+    case 0: /* Recharger */
       lire_jeu(avoir_jeu(donnee));
       MLV_draw_text_box(0,0,WINDOW_WIDTH, WINDOW_HEIGHT, "Configurations lues", 0,0,
                         COLOR_TEXT(avoir_jeu(donnee)->theme), 
@@ -44,7 +35,7 @@ static void data_injector_button_clique(Menu_Bouton* bouton, Donnees_Menu* donne
         ; 
       
       break;
-    case 4: /* Retour */
+    case 1: /* Retour */
       retour_menu(donnee);
       break;
   }
@@ -54,13 +45,9 @@ static void data_injector_button_clique(Menu_Bouton* bouton, Donnees_Menu* donne
  * Fonction pour essayer des données
  */
 Menu* data_injector() {
-  Menu* menu = creer_menu(5);
-  
-  definir_bouton(menu, 0, -200, -64, 400, 40, "Configuration", Position_Relative_Centre, Position_Relative_Milieu);
-  definir_bouton(menu, 1, -200, -20, 400, 40, "Sauvegardes", Position_Relative_Centre, Position_Relative_Milieu);
-  definir_bouton(menu, 2, -200,  24, 400, 40, "Scores", Position_Relative_Centre, Position_Relative_Milieu);
-  definir_bouton(menu, 3, -200,  68, 400, 40, "Recharger les configurations", Position_Relative_Centre, Position_Relative_Milieu);
-  definir_bouton(menu, 4, -200,  112, 400, 40, "Retour", Position_Relative_Centre, Position_Relative_Milieu);
+  Menu* menu = creer_menu(2);
+  definir_bouton(menu, 0, -200,  -64, 400, 40, "Recharger les configurations", Position_Relative_Centre, Position_Relative_Milieu);
+  definir_bouton(menu, 1, -200,   68, 400, 40, "Retour", Position_Relative_Centre, Position_Relative_Milieu);
   
   definir_fonction_clique_bouton(menu, data_injector_button_clique);
   definir_fonction_post_dessin(menu, data_injector_draw);

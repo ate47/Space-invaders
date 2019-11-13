@@ -5,7 +5,7 @@
 TARGET=SpaceInvaders
 
 # Fichier lors de l'archivage
-EXTRA_FILES=$(wildcard data/*) Makefile README
+EXTRA_FILES=$(wildcard data/*.png) Makefile README
 ARCHIVE_NAME=SpaceInvaders
 
 # Compilation
@@ -25,7 +25,7 @@ SOURCE_H=$(wildcard src/*.h) $(wildcard src/menus/*.h)
 OBJECTS =$(patsubst src/%.c, $(BUILD_DIR)/%.o, $(SOURCE_C))
 ARCHIVES_DATA=$(EXTRA_FILES) $(SOURCE_C) $(SOURCE_H)
 
-all: help
+all: build
 	
 
 ##################################### Help ####################################
@@ -48,7 +48,7 @@ modules:
 
 run: build
 	@echo "Lancement du jeu..."
-	@$(TARGET)
+	@./$(TARGET)
 
 
 #################################### Build ####################################
@@ -87,7 +87,7 @@ zip: $(ARCHIVES_DATA)
 
 targz: $(ARCHIVES_DATA)
 	@echo "Creation de '$(ARCHIVE_NAME).tar.gz'..."
-	@tar -zcvf $(ARCHIVE_NAME).tar.gz $(ARCHIVES_DATA)
+	@tar -czvf $(ARCHIVE_NAME).tar.gz $(ARCHIVES_DATA)
 
 #################################### Clean ####################################
 
@@ -108,3 +108,4 @@ cleanarch:
 	-@rm -f $(ARCHIVE_NAME).zip $(ARCHIVE_NAME).tar.gz
 
 ###############################################################################
+

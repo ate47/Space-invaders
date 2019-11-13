@@ -17,7 +17,11 @@ static void init_menu_button_clique(Menu_Bouton* bouton, Donnees_Menu* donnee) {
             break;
         case 1: /* Lancer */
             vider_config(&avoir_jeu(donnee)->config_actuel);
+#if DEV_MODE
         case 6: /* Reprendre */
+#else
+        case 5:
+#endif
             lancer_jeu(avoir_jeu(donnee));
             /* On retourne à l'ancien menu puis on replace un nouveau menu principal si le jeu n'est pas terminé */
             retour_menu(donnee);
@@ -34,9 +38,11 @@ static void init_menu_button_clique(Menu_Bouton* bouton, Donnees_Menu* donnee) {
         case 4: /* Options */
             lancer_menu(option_menu(), donnee);
             break;
+#if DEV_MODE
         case 5: /* data injector */
             lancer_menu(data_injector(), donnee);
             break;
+#endif
     }
 }
 
